@@ -30,7 +30,9 @@ def mostrar_menu():
     print("8. Ver clientes")
     print("9. Ver ventas realizadas")
     print("10. Ver facturas emitidas")
-    print("11. Salir")
+    print("11. Buscar libro por autor")
+    print("12. Filtrar por precio")
+    print("13. Salir")
 
 # Lista de libros como diccionarios
 libros = [
@@ -57,18 +59,20 @@ libros_vendidos = []
 clientes_recurrentes = []
 clientes_nuevos = []
 
-contador_factura = 1  # Número de factura incremental
+contador_factura = 1
+
 
 def agregar_libro():
     libro = input("Ingrese el nombre del libro: ")
     autor = input("Ingrese el autor del libro: ")
     precio = float(input("Ingrese el precio del libro: "))
-    # Validación de entrada
-    if not libro or not autor or precio <= 0:
-        print("Error: Todos los campos son obligatorios y el precio debe ser mayor a 0.")
-        return
-        
-    libros.append({"nombre": libro, "autor": autor, "precio": precio})
+    stock = int(input("Ingrese el stock del libro: "))
+    # Verificamos si el libro ya existe 
+    for libroExistente in libros:
+        if libroExistente["nombre"].lower() == libro.lower():
+            print(f"El libro '{libro}' ya existe.")
+            return
+    libros.append({"nombre": libro, "autor": autor, "precio": precio, "stock": stock})
     print(f"Libro '{libro}' agregado con éxito.")
 
 def modificar_libro():
@@ -78,7 +82,8 @@ def modificar_libro():
             nuevo_nombre = input("Ingrese el nuevo nombre del libro: ")
             nuevo_autor = input("Ingrese el nuevo autor del libro: ")
             nuevo_precio = float(input("Ingrese el nuevo precio del libro: "))
-            libros[i] = {"nombre": nuevo_nombre, "autor": nuevo_autor, "precio": nuevo_precio}
+            nuevo_stock = int(input("Ingrese el stock actual del libro: "))
+            libros[i] = {"nombre": nuevo_nombre, "autor": nuevo_autor, "precio": nuevo_precio, "stock": nuevo_stock}
             print(f"Libro '{libro}' modificado con éxito.")
             return
     print(f"Libro '{libro}' no encontrado.")
@@ -109,8 +114,21 @@ def ver_libros():
             print(f"Nombre: {libro['nombre']}, Autor: {libro['autor']}, Precio: {libro['precio']}")
 
 def vender_libro():
-    global contador_factura
-    cliente = input("Ingrese el nombre del cliente: ").strip().capitalize()
+    # Variable contadora dentro de la función 
+    global contador_factura 
+    cliente_dni = input("Ingrese el DNI del cliente: ").strip()
+
+    # Verificamos si el cliente existe
+    cliente = None
+    for c in clientes:
+        if c["dni"] == cliente_dni:
+            cliente = c["nombre"]
+            break
+
+    if not cliente:
+        print("Cliente no encontrado. Registrando nuevo cliente...")
+        cliente = registrar_cliente(cliente_dni)
+
     libro_nombre = input("Ingrese el nombre del libro a vender: ").strip()
 
     for i in range(len(libros)):
@@ -144,6 +162,31 @@ def vender_libro():
             print("---------------------")
             return
     print("Libro no encontrado.")
+
+def buscar_por_autor():
+    autor = input("Ingrese el autor a buscar: ")
+    libros_autor = [libro for libro in libros if libro["autor"].lower() == autor.lower()]
+    if libros_autor:
+        for libro in libros_autor:
+            print(libro)
+    else:
+        print(f"No se encontraron libros del autor {autor}")
+
+def libros_baratos():
+    monto = int(input("Buscar libros mayores a: $"))
+    baratos = [libro for libro in libros if libro["precio"] < monto]
+    if baratos: 
+        print(f"Libros con precio menor a {monto}:")
+        for libro in baratos:
+            print(libro)
+
+def registrar_cliente(dni):
+    nombre_cliente = input("Ingrese el nombre del cliente: ").strip().capitalize()
+    tipo_cliente = input("Ingrese el tipo de cliente (nuevo/recurrente): ").strip().lower()
+    nuevo_cliente = {"nombre": nombre_cliente, "dni": dni}
+    clientes.append(nuevo_cliente)
+    print(f"Cliente '{nombre_cliente}' registrado con éxito.")
+    return nombre_cliente
 
 def agregar_cliente():
     nombre_cliente = input("Ingrese el nombre del cliente: ").strip().capitalize()
@@ -208,6 +251,10 @@ while True:
     elif opcion == "10":
         ver_facturas()
     elif opcion == "11":
+        buscar_por_autor()
+    elif opcion == "12":
+        libros_baratos()
+    elif opcion == "13":
         print("Saliendo del programa...")
         break
     else:   
