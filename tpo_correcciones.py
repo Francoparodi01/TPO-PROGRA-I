@@ -16,6 +16,35 @@ def login(usuarios):
         contrasena = input("Contraseña: ")
     return usuario  # Devuelve el usuario autenticado
 
+
+# Validador de opciones 
+def pedir_opcion(mensaje, opciones_validas):
+    """
+    Pide una opción al usuario y valida que sea un número dentro de las opciones válidas.
+    
+    :param mensaje: str, el texto que se muestra al pedir la opción
+    :param opciones_validas: lista o conjunto con los números válidos (ej: [1, 2, 3])
+    :return: int, la opción elegida por el usuario
+    """
+    while True:
+        try:
+            opcion = int(input(mensaje))
+            if opcion in opciones_validas:
+                return opcion
+            else:
+                print("✖ Opción fuera de rango.")
+        except ValueError:
+            print("✖ Ingresá un número válido.")
+
+def pedir_texto(mensaje):
+    while True:
+        texto = input(mensaje)
+        if texto.isalpha() or " " in texto:  # o un chequeo más simple
+            return texto.title()
+        else:
+            print("✖ Ingresá solo letras y espacios.")
+
+
 # Muestra el menú principal con opciones básicas
 def mostrar_menu_principal(usuario):
     print("\n" + "-" * 60)
@@ -45,29 +74,31 @@ def menu_libros(libros):
         print("9) Gestionar categorías")
         print("10) Volver")
         print("-" * 60)
-        opcion = input("Seleccione una opción: ")
-        if opcion == "1":
+
+        opcion = pedir_opcion("Seleccione una opción: ", list(range(1, 11)))
+
+        if opcion == 1:
             agregar_libro(libros)
-        elif opcion == "2":
+        elif opcion == 2:
             buscar_libro_ui(libros)
-        elif opcion == "3":
+        elif opcion == 3:
             modificar_libro(libros)
-        elif opcion == "4":
+        elif opcion == 4:
             ver_stock_total(libros)
-        elif opcion == "5":
+        elif opcion == 5:
             eliminar_libro(libros)
-        elif opcion == "6":
+        elif opcion == 6:
             mostrar_ultimos_libros(libros)
-        elif opcion == "7":
+        elif opcion == 7:
             libros_baratos(libros)
-        elif opcion == "8":
+        elif opcion == 8:
             reactivar_libro(libros)
-        elif opcion == "9":
+        elif opcion == 9:
             menu_categorias()
-        elif opcion == "10":
+        elif opcion == 10:
             break
-        else:
-            print("Opción inválida.")
+
+
                        
 CATEGORIAS = {
     "Ficcion",
@@ -80,6 +111,7 @@ CATEGORIAS = {
 # Se crea uno nuevo modulado, por un lado el menu_ui y por otro las funciones de gestión de categorías
 
 # Menú para gestionar categorías de libros
+# categorias es un set, no una lista
 CATEGORIAS = {"Ficcion", "Ciencia", "Historia", "Infantil"}
 
 def obtener_categorias():
@@ -116,7 +148,9 @@ def menu_ventas(libros, clientes, ventas, facturas):
         print("3) Ver facturas emitidas")
         print("4) Volver")
         print("-" * 60)
+
         opcion = input("Seleccione una opción: ")
+        
         if opcion == "1":
             vender_libro(libros, clientes, ventas, facturas)
         elif opcion == "2":
@@ -139,17 +173,18 @@ def menu_clientes(clientes):
         print("3) Ver clientes")
         print("4) Volver")
         print("-" * 60)
-        opcion = input("Seleccione una opción: ")
-        if opcion == "1":
+
+        opcion = pedir_opcion("Seleccione una opción: ", [1, 2, 3, 4])
+
+        if opcion == 1:
             agregar_cliente(clientes)
-        elif opcion == "2":
+        elif opcion == 2:
             eliminar_cliente(clientes)
-        elif opcion == "3":
+        elif opcion == 3:
             ver_clientes(clientes)
-        elif opcion == "4":
+        elif opcion == 4:
             break
-        else:
-            print("Opción inválida.")
+
 
 # Menú para gestionar categorías de libros
 def menu_categorias():
@@ -160,50 +195,44 @@ def menu_categorias():
         print("3) Modificar categoría")
         print("4) Eliminar categoría")
         print("5) Volver")
-        opcion = input("Seleccione una opción: ")
 
-        if opcion == "1":
+        opcion = pedir_opcion("Seleccione una opción: ", [1, 2, 3, 4, 5])
+
+        if opcion == 1:
             print("\nCategorías disponibles:")
             for cat in obtener_categorias():
                 print(f"- {cat}")
 
-        elif opcion == "2":
+        elif opcion == 2:
             nueva = input("Ingrese nueva categoría: ").title()
             if agregar_categoria(nueva):
                 print("✔ Categoría agregada.")
-                print("Categorías actuales:")
-                for cat in obtener_categorias():
-                    print(f"- {cat}")
             else:
                 print("✖ Ya existe esa categoría.")
+            for cat in obtener_categorias():
+                print(f"- {cat}")
 
-        elif opcion == "3":
+        elif opcion == 3:
             actual = input("Categoría a modificar: ").title()
             nueva = input("Nuevo nombre: ").title()
             if modificar_categoria(actual, nueva):
                 print("✔ Modificada correctamente.")
-                print("Categorías actuales:")
-                for cat in obtener_categorias():
-                    print(f"- {cat}")
-                
             else:
                 print("✖ Error al modificar. Verifique los nombres.")
+            for cat in obtener_categorias():
+                print(f"- {cat}")
 
-        elif opcion == "4":
+        elif opcion == 4:
             nombre = input("Categoría a eliminar: ").title()
             if eliminar_categoria(nombre):
                 print("✔ Eliminada correctamente.")
-                print("Categorías actuales:")
-                for cat in obtener_categorias():
-                    print(f"- {cat}")
             else:
                 print("✖ No se pudo eliminar. ¿Existe o es la única?")
+            for cat in obtener_categorias():
+                print(f"- {cat}")
 
-        elif opcion == "5":
+        elif opcion == 5:
             break
-
-        else:
-            print("Opción inválida.")
 
 # ──────────────────── Funciones de Libros ────────────────────
 # Agrega un libro con validación de categoría y duplicados
@@ -359,7 +388,6 @@ def ver_stock_total(libros):
             f"Stock:{libro['stock']:>3}"
         )
     print("-" * 60)
-
 
 
 # Muestra los últimos N libros usando slicing
@@ -551,8 +579,7 @@ def ver_facturas_emitidas(facturas):
 
 # Sale del programa
 def salir():
-    print("Saliendo...")
-    exit()
+    print("Sesión cerrada. Volviendo al login...")
 
 # ──────────────────── Programa principal ────────────────────
 def main():
@@ -578,20 +605,23 @@ def main():
     ventas = []
     facturas = []
 
-    usuario = login(usuarios)
+
     while True:
-        mostrar_menu_principal(usuario)
-        opcion = input("Opción: ")
-        if opcion == "1":
-            menu_libros(libros)
-        elif opcion == "2":
-            menu_ventas(libros, clientes, ventas, facturas)
-        elif opcion == "3":
-            menu_clientes(clientes)
-        elif opcion == "4":
-            salir()
-        else:
-            print("Opción inválida.")
+        usuario = login(usuarios)
+        while True:
+                mostrar_menu_principal(usuario)
+
+                opcion = pedir_opcion("Seleccione una opción: ", [1, 2, 3, 4])
+
+                if opcion == 1:
+                    menu_libros(libros)
+                elif opcion == 2:
+                    menu_ventas(libros, clientes, ventas, facturas)
+                elif opcion == 3:
+                    menu_clientes(clientes)
+                elif opcion == 4:
+                    salir()
+                    break 
 
 main()
 
