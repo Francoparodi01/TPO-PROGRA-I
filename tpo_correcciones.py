@@ -100,12 +100,6 @@ def menu_libros(libros):
 
 
                        
-CATEGORIAS = {
-    "Ficcion",
-    "Ciencia",
-    "Historia",
-    "Infantil"
-}
 
 # Eliminado el menú de categorías
 # Se crea uno nuevo modulado, por un lado el menu_ui y por otro las funciones de gestión de categorías
@@ -432,7 +426,8 @@ def libros_baratos(libros):
         print("✖ Ingresá un número válido.")
         return
 
-    baratos = [libro for libro in libros if es_libro_barato(libro, limite)]
+    condicion = lambda l: l["precio"] < limite and l.get("estado") == "disponible"
+    baratos = [libro for libro in libros if condicion(libro)]
 
     print("\n" + "-" * 60)
     print(f" LIBROS BARATOS (<${limite}) ")
