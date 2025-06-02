@@ -1,9 +1,9 @@
 import random
-from utils import pedir_texto, pedir_opcion
+from utils import pedir_texto, pedir_opcion, registrar_log
 
 CATEGORIAS = {"Ficcion", "Ciencia", "Historia", "Infantil"}
 
-def menu_libros(libros):
+def menu_libros(libros, usuario):
     while True:
         print("\n" + "*" * 60)
         print("MENÚ LIBROS")
@@ -23,13 +23,13 @@ def menu_libros(libros):
         opcion = pedir_opcion("Seleccione una opción: ", list(range(1, 11)))
 
         if opcion == 1:
-            agregar_libro(libros)
+            agregar_libro(libros, usuario)
         elif opcion == 2:
-            buscar_libro_ui(libros)
+            buscar_libro_ui(libros, usuario)
         elif opcion == 3:
-            modificar_libro(libros)
+            modificar_libro(libros, usuario)
         elif opcion == 4:
-            ver_stock_total(libros)
+            ver_stock_total(libros, usuario)
         elif opcion == 5:
             eliminar_libro(libros)
         elif opcion == 6:
@@ -43,7 +43,7 @@ def menu_libros(libros):
         elif opcion == 10:
             break
 
-def agregar_libro(libros):
+def agregar_libro(libros, usuario):
     print("\n" + "-" * 60)
     titulo = pedir_texto("Título (o 'salir' para terminar): ")
     while titulo.lower() != "salir":
@@ -65,7 +65,7 @@ def agregar_libro(libros):
                 print("✖ Datos inválidos. Precio y stock deben ser positivos.")
                 continue
             nuevo_id = generar_id_unico(libros)
-            libros.append({
+            libro_nuevo = {
                 "id": nuevo_id,
                 "titulo": titulo,
                 "autor": autor,
@@ -74,10 +74,18 @@ def agregar_libro(libros):
                 "stock": stock,
                 "isbn": "",
                 "estado": "disponible"
-            })
+            }
+            libros.append(libro_nuevo)
             print(f"✔ Libro agregado con ID {nuevo_id}.")
+            # Registrar log
+            registrar_log(
+                "Agregar libro",
+                datos=libro_nuevo,
+                usuario=usuario
+            )
         print("-" * 60)
         titulo = pedir_texto("Otro título (o 'salir'): ")
+
 
 def generar_id_unico(libros):
     ids = {libro["id"] for libro in libros}
@@ -86,13 +94,21 @@ def generar_id_unico(libros):
         nuevo = random.randint(10000, 99999)
     return nuevo
 
-def buscar_libro(libros, id_libro):
-    return next((libro for libro in libros if libro["id"] == id_libro), None)
+def buscar_libro(libros, id_libro, usuario):
+    libro = next((libro for libro in libros if libro["id"] == id_libro), None)    
+    return libro
 
-def buscar_libro_ui(libros):
+def buscar_libro_ui(libros, usuario):
     try:
         id_lib = int(input("ID a buscar: "))
-        libro = buscar_libro(libros, id_lib)
+        libro = buscar_libro(libros, id_lib, usuario)  # Pasando usuario
+
+        registrar_log(
+            "Buscar libro",
+            datos={"id": id_lib, "encontrado": bool(libro)},
+            usuario=usuario
+        )
+
         print(libro if libro else "No encontrado.")
     except ValueError:
         print("✖ ID inválido.")
@@ -100,7 +116,7 @@ def buscar_libro_ui(libros):
 def buscar_libro_por_titulo(libros, titulo):
     return next((libro for libro in libros if libro["titulo"].lower() == titulo.lower()), None)
 
-def modificar_libro(libros):
+def modificar_libro(libros, usuario="desconocido"):
     titulo = input("Título del libro a modificar: ").strip()
     libro = buscar_libro_por_titulo(libros, titulo)
     if not libro:
@@ -111,19 +127,49 @@ def modificar_libro(libros):
     op = input("¿Qué desea modificar?: ")
 
     if op == "1":
+        valor_anterior = libro["titulo"]
         libro["titulo"] = input("Nuevo título: ").title()
+        registrar_log(
+            "Modificar título",
+            datos={"id": libro["id"], "anterior": valor_anterior, "nuevo": libro["titulo"]},
+            usuario=usuario
+        )
     elif op == "2":
+        valor_anterior = libro["autor"]
         libro["autor"] = input("Nuevo autor: ").title()
+        registrar_log(
+            "Modificar autor",
+            datos={"id": libro["id"], "anterior": valor_anterior, "nuevo": libro["autor"]},
+            usuario=usuario
+        )
     elif op == "3":
         nueva_cat = input(f"Nueva categoría {CATEGORIAS}: ").title()
         if nueva_cat in CATEGORIAS:
+            valor_anterior = libro["categoria"]
             libro["categoria"] = nueva_cat
+            registrar_log(
+                "Modificar categoría",
+                datos={"id": libro["id"], "anterior": valor_anterior, "nuevo": nueva_cat},
+                usuario=usuario
+            )
         else:
             print("✖ Categoría inválida.")
     elif op == "4":
+        valor_anterior = libro["precio"]
         libro["precio"] = float(input("Nuevo precio: "))
+        registrar_log(
+            "Modificar precio",
+            datos={"id": libro["id"], "anterior": valor_anterior, "nuevo": libro["precio"]},
+            usuario=usuario
+        )
     elif op == "5":
+        valor_anterior = libro["stock"]
         libro["stock"] = int(input("Nuevo stock: "))
+        registrar_log(
+            "Modificar stock",
+            datos={"id": libro["id"], "anterior": valor_anterior, "nuevo": libro["stock"]},
+            usuario=usuario
+        )
     else:
         print("✖ Opción inválida.")
 
@@ -160,7 +206,7 @@ def reactivar_libro(libros):
     except ValueError:
         print("✖ ID inválido.")
 
-def ver_stock_total(libros):
+def ver_stock_total(libros, usuario):
     print("\n" + "-" * 60)
     print(" STOCK TOTAL ")
     print("-" * 60)
@@ -172,6 +218,12 @@ def ver_stock_total(libros):
             f"ID:{libro['id']:>5} | {libro['titulo']:<30} | Categoría:{categoria:<15} | Stock:{libro['stock']:>3}"
         )
     print("-" * 60)
+    # Registrar solo una vez la acción de consultar el stock
+    registrar_log(
+        "Consultar stock total",
+        datos={"cantidad_libros": sum(1 for libro in libros if libro.get("estado") == "disponible")},
+        usuario=usuario
+    )
 
 def mostrar_ultimos_libros(libros):
     if not libros:

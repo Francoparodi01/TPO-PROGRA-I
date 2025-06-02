@@ -38,7 +38,7 @@ def main():
             opcion = pedir_opcion("Seleccione una opción: ", [1, 2, 3, 4])
 
             if opcion == 1:
-                menu_libros(libros)
+                menu_libros(libros, usuario)
             elif opcion == 2:
                 menu_ventas(libros, clientes, ventas, facturas)
             elif opcion == 3:

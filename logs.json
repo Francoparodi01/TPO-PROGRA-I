@@ -1,0 +1,93 @@
+[
+  {
+    "timestamp": "2025-06-02T19:53:47.587365",
+    "accion": "Agregar libro",
+    "usuario": "vendedor1",
+    "datos": {
+      "id": 55484,
+      "titulo": "Franco",
+      "autor": "Parodi",
+      "categoria": "Ciencia",
+      "precio": 4000.0,
+      "stock": 40,
+      "isbn": "",
+      "estado": "disponible"
+    }
+  },
+  {
+    "timestamp": "2025-06-02T19:53:56.103434",
+    "accion": "Buscar libro",
+    "usuario": "vendedor1",
+    "datos": {
+      "id": 40,
+      "encontrado": false
+    }
+  },
+  {
+    "timestamp": "2025-06-02T19:54:03.102664",
+    "accion": "Buscar libro",
+    "usuario": "vendedor1",
+    "datos": {
+      "id": 1,
+      "encontrado": true
+    }
+  },
+  {
+    "timestamp": "2025-06-02T19:54:22.138914",
+    "accion": "Consultar stock total",
+    "usuario": "vendedor2",
+    "datos": {
+      "cantidad_libros": 10
+    }
+  },
+  {
+    "timestamp": "2025-06-02T19:57:38.367592",
+    "accion": "Agregar libro",
+    "usuario": "vendedor1",
+    "datos": {
+      "id": 63620,
+      "titulo": "Franco",
+      "autor": "Franco",
+      "categoria": "Ficcion",
+      "precio": 4000.0,
+      "stock": 50,
+      "isbn": "",
+      "estado": "disponible"
+    }
+  },
+  {
+    "timestamp": "2025-06-02T19:57:48.536982",
+    "accion": "Buscar libro",
+    "usuario": "vendedor1",
+    "datos": {
+      "id": 3,
+      "encontrado": true
+    }
+  },
+  {
+    "timestamp": "2025-06-02T19:58:00.452375",
+    "accion": "Consultar stock total",
+    "usuario": "vendedor1",
+    "datos": {
+      "cantidad_libros": 11
+    }
+  },
+  {
+    "timestamp": "2025-06-02T19:59:19.669986",
+    "accion": "Modificar título",
+    "usuario": "vendedor2",
+    "datos": {
+      "id": 1,
+      "anterior": "1984",
+      "nuevo": "Franco"
+    }
+  },
+  {
+    "timestamp": "2025-06-02T19:59:29.442105",
+    "accion": "Consultar stock total",
+    "usuario": "vendedor2",
+    "datos": {
+      "cantidad_libros": 10
+    }
+  }
+]

@@ -1,3 +1,7 @@
+import json
+from datetime import datetime
+from pathlib import Path
+
 def login(usuarios):
     print("=" * 60)
     print("SISTEMA DE LIBRERÍA")
@@ -41,6 +45,43 @@ def mostrar_menu_principal(usuario):
     print("3) Clientes")
     print("4) Salir")
     print("-" * 60)
+
+
+LOG_FILE = Path("logs.json")
+
+def registrar_log(accion, datos=None, usuario="desconocido"):
+    """
+    Registra una acción en el archivo logs.json.
+
+    :param accion: (str) Descripción de la acción realizada
+    :param datos: (dict|None) Información adicional asociada
+    :param usuario: (str) Usuario que realiza la acción
+    """
+    log_entry = {
+        "timestamp": datetime.now().isoformat(),
+        "accion": accion,
+        "usuario": usuario,
+        "datos": datos or {}
+    }
+
+    # Leer logs existentes
+    if LOG_FILE.exists():
+        with LOG_FILE.open("r", encoding="utf-8") as f:
+            try:
+                logs = json.load(f)
+            except json.JSONDecodeError:
+                logs = []
+    else:
+        logs = []
+
+    # Agregar nuevo log
+    logs.append(log_entry)
+
+    # Escribir nuevamente
+    with LOG_FILE.open("w", encoding="utf-8") as f:
+        json.dump(logs, f, indent=2, ensure_ascii=False)
+
+
 
 
 def salir():
