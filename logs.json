@@ -1,144 +1,6 @@
 [
   {
-    "timestamp": "2025-06-02T19:53:47.587365",
-    "accion": "Agregar libro",
-    "usuario": "vendedor1",
-    "datos": {
-      "id": 55484,
-      "titulo": "Franco",
-      "autor": "Parodi",
-      "categoria": "Ciencia",
-      "precio": 4000.0,
-      "stock": 40,
-      "isbn": "",
-      "estado": "disponible"
-    }
-  },
-  {
-    "timestamp": "2025-06-02T19:53:56.103434",
-    "accion": "Buscar libro",
-    "usuario": "vendedor1",
-    "datos": {
-      "id": 40,
-      "encontrado": false
-    }
-  },
-  {
-    "timestamp": "2025-06-02T19:54:03.102664",
-    "accion": "Buscar libro",
-    "usuario": "vendedor1",
-    "datos": {
-      "id": 1,
-      "encontrado": true
-    }
-  },
-  {
-    "timestamp": "2025-06-02T19:54:22.138914",
-    "accion": "Consultar stock total",
-    "usuario": "vendedor2",
-    "datos": {
-      "cantidad_libros": 10
-    }
-  },
-  {
-    "timestamp": "2025-06-02T19:57:38.367592",
-    "accion": "Agregar libro",
-    "usuario": "vendedor1",
-    "datos": {
-      "id": 63620,
-      "titulo": "Franco",
-      "autor": "Franco",
-      "categoria": "Ficcion",
-      "precio": 4000.0,
-      "stock": 50,
-      "isbn": "",
-      "estado": "disponible"
-    }
-  },
-  {
-    "timestamp": "2025-06-02T19:57:48.536982",
-    "accion": "Buscar libro",
-    "usuario": "vendedor1",
-    "datos": {
-      "id": 3,
-      "encontrado": true
-    }
-  },
-  {
-    "timestamp": "2025-06-02T19:58:00.452375",
-    "accion": "Consultar stock total",
-    "usuario": "vendedor1",
-    "datos": {
-      "cantidad_libros": 11
-    }
-  },
-  {
-    "timestamp": "2025-06-02T19:59:19.669986",
-    "accion": "Modificar título",
-    "usuario": "vendedor2",
-    "datos": {
-      "id": 1,
-      "anterior": "1984",
-      "nuevo": "Franco"
-    }
-  },
-  {
-    "timestamp": "2025-06-02T19:59:29.442105",
-    "accion": "Consultar stock total",
-    "usuario": "vendedor2",
-    "datos": {
-      "cantidad_libros": 10
-    }
-  },
-  {
-    "timestamp": "2025-06-09T16:34:53.373441",
-    "accion": "Agregar libro",
-    "usuario": "vendedor1",
-    "datos": {
-      "id": 48886,
-      "titulo": "Franco",
-      "autor": "Parodi",
-      "categoria": "Infantil",
-      "precio": 40000.0,
-      "stock": 40,
-      "isbn": "000-0000000000",
-      "estado": "disponible"
-    }
-  },
-  {
-    "timestamp": "2025-06-09T16:35:00.937591",
-    "accion": "Buscar libro",
-    "usuario": "vendedor1",
-    "datos": {
-      "id": 1,
-      "encontrado": true
-    }
-  },
-  {
-    "timestamp": "2025-06-09T16:35:06.564240",
-    "accion": "Consultar stock total",
-    "usuario": "vendedor1",
-    "datos": {
-      "cantidad_libros": 11
-    }
-  },
-  {
-    "timestamp": "2025-06-09T16:37:09.648060",
-    "accion": "Agregar libro",
-    "usuario": "vendedor1",
-    "datos": {
-      "id": 57935,
-      "titulo": "Franco",
-      "autor": "Parodi",
-      "categoria": "Ficcion",
-      "precio": 40000.0,
-      "stock": 40,
-      "isbn": "000-0000000000",
-      "estado": "disponible"
-    }
-  },
-  {
-    "timestamp": "2025-06-09T17:28:43.807507",
+    "timestamp": "2025-06-09T18:34:48.013067",
     "accion": "Agregar cliente",
     "usuario": "vendedor1",
     "datos": {
@@ -148,11 +10,204 @@
     }
   },
   {
-    "timestamp": "2025-06-09T17:28:47.130028",
+    "timestamp": "2025-06-09T18:34:56.245694",
     "accion": "Ver clientes",
     "usuario": "vendedor1",
     "datos": {
       "cantidad": 3
+    }
+  },
+  {
+    "timestamp": "2025-06-09T18:35:10.439537",
+    "accion": "Consultar stock total",
+    "usuario": "vendedor1",
+    "datos": {
+      "cantidad_libros": 10
+    }
+  },
+  {
+    "timestamp": "2025-06-09T18:35:51.238318",
+    "accion": "Agregar cliente",
+    "usuario": "vendedor1",
+    "datos": {
+      "dni": "43034931",
+      "nombre": "Franco",
+      "apellido": "Parodi"
+    }
+  },
+  {
+    "timestamp": "2025-06-09T18:35:57.016912",
+    "accion": "Eliminar cliente",
+    "usuario": "vendedor1",
+    "datos": {
+      "dni": "43034931",
+      "resultado": "eliminado"
+    }
+  },
+  {
+    "timestamp": "2025-06-09T18:36:12.213361",
+    "accion": "Libros baratos",
+    "usuario": "sistema",
+    "datos": {
+      "limite": 4000.0,
+      "cantidad": 0
+    }
+  },
+  {
+    "timestamp": "2025-06-09T18:36:24.516407",
+    "accion": "Mostrar últimos libros",
+    "usuario": "sistema",
+    "datos": {
+      "cantidad_mostrada": 7
+    }
+  },
+  {
+    "timestamp": "2025-06-09T18:36:30.000245",
+    "accion": "Reactivar libro",
+    "usuario": "sistema",
+    "datos": {
+      "resultado": "todos disponibles"
+    }
+  },
+  {
+    "timestamp": "2025-06-09T18:36:48.839919",
+    "accion": "Consultar stock total",
+    "usuario": "vendedor1",
+    "datos": {
+      "cantidad_libros": 10
+    }
+  },
+  {
+    "timestamp": "2025-06-09T18:37:02.821783",
+    "accion": "Modificar título",
+    "usuario": "vendedor1",
+    "datos": {
+      "id": 9,
+      "anterior": "Orgullo y prejuicio",
+      "nuevo": "Franco"
+    }
+  },
+  {
+    "timestamp": "2025-06-09T20:09:23.704314",
+    "accion": "Agregar libro",
+    "usuario": "vendedor1",
+    "datos": {
+      "id": 26422,
+      "titulo": "Franco",
+      "autor": "Parodi",
+      "categoria": "Ficcion",
+      "precio": 40000.0,
+      "stock": 4,
+      "isbn": "333-4358643587",
+      "estado": "disponible"
+    }
+  },
+  {
+    "timestamp": "2025-06-09T20:09:43.693230",
+    "accion": "Modificar título",
+    "usuario": "vendedor1",
+    "datos": {
+      "id": 9,
+      "anterior": "Franco",
+      "nuevo": "Parodi"
+    }
+  },
+  {
+    "timestamp": "2025-06-09T20:10:37.908429",
+    "accion": "Agregar cliente",
+    "usuario": "vendedor1",
+    "datos": {
+      "dni": "43034931",
+      "nombre": "Franco",
+      "apellido": "Parodi"
+    }
+  },
+  {
+    "timestamp": "2025-06-09T20:10:46.669537",
+    "accion": "Eliminar cliente",
+    "usuario": "vendedor1",
+    "datos": {
+      "dni": "43034931",
+      "resultado": "eliminado"
+    }
+  },
+  {
+    "timestamp": "2025-06-09T20:10:53.768484",
+    "accion": "Ver ventas realizadas",
+    "usuario": "vendedor1",
+    "datos": {
+      "cantidad": 0
+    }
+  },
+  {
+    "timestamp": "2025-06-09T20:10:58.511216",
+    "accion": "Ver facturas emitidas",
+    "usuario": "vendedor1",
+    "datos": {
+      "cantidad": 0
+    }
+  },
+  {
+    "timestamp": "2025-06-09T20:14:14.972961",
+    "accion": "Agregar cliente",
+    "usuario": "43034931",
+    "datos": {
+      "dni": "43034931",
+      "nombre": "Franco",
+      "apellido": "Parodi"
+    }
+  },
+  {
+    "timestamp": "2025-06-09T20:17:21.246554",
+    "accion": "Agregar cliente",
+    "usuario": "vendedor1",
+    "datos": {
+      "dni": "43034931",
+      "nombre": "Franco",
+      "apellido": "Parodi"
+    }
+  },
+  {
+    "timestamp": "2025-06-09T20:19:46.717100",
+    "accion": "Agregar cliente",
+    "usuario": "vendedor1",
+    "datos": {
+      "dni": "43034931",
+      "nombre": "Franco",
+      "apellido": "Parodi"
+    }
+  },
+  {
+    "timestamp": "2025-06-09T20:19:53.665285",
+    "accion": "Venta realizada",
+    "usuario": "vendedor1",
+    "datos": {
+      "Factura": 1,
+      "Fecha": "2025-06-09 20:19:46",
+      "DNI": "43034931",
+      "Libros": {
+        "2": {
+          "Cantidad": 3,
+          "Precio": 15000.0
+        }
+      },
+      "Total": 15000.0
+    }
+  },
+  {
+    "timestamp": "2025-06-09T20:20:06.493269",
+    "accion": "Ver ventas realizadas",
+    "usuario": "vendedor1",
+    "datos": {
+      "cantidad": 1
+    }
+  },
+  {
+    "timestamp": "2025-06-09T20:20:09.127536",
+    "accion": "Ver facturas emitidas",
+    "usuario": "vendedor1",
+    "datos": {
+      "cantidad": 1
     }
   }
 ]

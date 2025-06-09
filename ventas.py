@@ -35,7 +35,7 @@ def vender_libro(libros, clientes, ventas, facturas, usuario):
         print(f"Bienvenido/a {cliente['nombre']} {cliente['apellido']}")
     else:
         print("Cliente no encontrado. Agregando nuevo cliente.")
-        agregar_cliente(clientes, dni_cliente, usuario=usuario)
+        agregar_cliente(clientes, usuario=usuario, dni=dni_cliente)
         cliente = buscar_cliente(clientes, dni_cliente)
 
     fecha = datetime.now().strftime("%Y-%m-%d %H:%M:%S")

@@ -70,6 +70,7 @@ def agregar_libro(libros, usuario):
             except ValueError:
                 print("✖ Datos inválidos. Precio y stock deben ser positivos.")
                 continue
+
             isbn = input("ISBN (formato 000-0000000000): ")
             while not validar_isbn(isbn):
                 print("✖ Formato inválido.")
@@ -105,9 +106,9 @@ def generar_id_unico(libros):
         nuevo = random.randint(10000, 99999)
     return nuevo
 
-def buscar_libro(libros, id_libro, usuario):
-    libro = next((libro for libro in libros if libro["id"] == id_libro), None)    
-    return libro
+def buscar_libro(libros, id_libro):
+    return next((libro for libro in libros if libro["id"] == id_libro), None)
+
 
 def buscar_libro_ui(libros, usuario):
     try:
@@ -313,7 +314,8 @@ def eliminar_categoria(nombre, usuario="sistema"):
     registrar_log("Eliminar categoría", datos={"nombre": nombre, "resultado": "eliminada"}, usuario=usuario)
     return True
 
-def menu_categorias(usuario="sistema"):
+
+def menu_categorias():
     while True:
         print("\n--- GESTIÓN DE CATEGORÍAS ---")
         print("1) Ver categorías")
@@ -331,7 +333,7 @@ def menu_categorias(usuario="sistema"):
 
         elif opcion == 2:
             nueva = input("Ingrese nueva categoría: ").title()
-            if agregar_categoria(nueva, usuario):
+            if agregar_categoria(nueva):
                 print("✔ Categoría agregada.")
             else:
                 print("✖ Ya existe esa categoría.")
@@ -339,14 +341,14 @@ def menu_categorias(usuario="sistema"):
         elif opcion == 3:
             actual = input("Categoría a modificar: ").title()
             nueva = input("Nuevo nombre: ").title()
-            if modificar_categoria(actual, nueva, usuario):
+            if modificar_categoria(actual, nueva):
                 print("✔ Modificada correctamente.")
             else:
                 print("✖ Error al modificar. Verifique los nombres.")
 
         elif opcion == 4:
             nombre = input("Categoría a eliminar: ").title()
-            if eliminar_categoria(nombre, usuario):
+            if eliminar_categoria(nombre):
                 print("✔ Eliminada correctamente.")
             else:
                 print("✖ No se pudo eliminar. ¿Existe o es la única?")
