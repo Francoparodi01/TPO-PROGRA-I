@@ -1,7 +1,9 @@
 import random
+import re 
+
 from utils import pedir_texto, pedir_opcion, registrar_log
 
-CATEGORIAS = {"Ficcion", "Ciencia", "Historia", "Infantil"}
+CATEGORIAS = ("Ficcion", "Ciencia", "Historia", "Infantil")
 
 def menu_libros(libros, usuario):
     while True:
@@ -43,6 +45,10 @@ def menu_libros(libros, usuario):
         elif opcion == 10:
             break
 
+def validar_isbn(isbn):
+    patron = r"^\d{3}-\d{10}$"
+    return bool(re.match(patron, isbn))
+
 def agregar_libro(libros, usuario):
     print("\n" + "-" * 60)
     titulo = pedir_texto("Título (o 'salir' para terminar): ")
@@ -64,6 +70,11 @@ def agregar_libro(libros, usuario):
             except ValueError:
                 print("✖ Datos inválidos. Precio y stock deben ser positivos.")
                 continue
+            isbn = input("ISBN (formato 000-0000000000): ")
+            while not validar_isbn(isbn):
+                print("✖ Formato inválido.")
+                isbn = input("ISBN (formato 000-0000000000): ")
+
             nuevo_id = generar_id_unico(libros)
             libro_nuevo = {
                 "id": nuevo_id,
@@ -72,7 +83,7 @@ def agregar_libro(libros, usuario):
                 "categoria": categoria,
                 "precio": precio,
                 "stock": stock,
-                "isbn": "",
+                "isbn": isbn,
                 "estado": "disponible"
             }
             libros.append(libro_nuevo)
@@ -180,31 +191,42 @@ def eliminar_libro(libros):
         if libro:
             libro["estado"] = "no disponible"
             print("✔ Libro marcado como no disponible.")
+            registrar_log("Eliminar libro", datos={"id": id_lib, "resultado": "ok"}, usuario="sistema")
         else:
             print("No encontrado.")
+            registrar_log("Eliminar libro", datos={"id": id_lib, "resultado": "no encontrado"}, usuario="sistema")
     except ValueError:
         print("✖ ID inválido.")
+        registrar_log("Eliminar libro", datos={"id": "inválido"}, usuario="sistema")
 
 def reactivar_libro(libros):
     no_disponibles = [l for l in libros if l.get("estado") != "disponible"]
     if not no_disponibles:
         print("✔ Todos los libros están disponibles.")
+        registrar_log("Reactivar libro", datos={"resultado": "todos disponibles"}, usuario="sistema")
         return
+
     for l in no_disponibles:
         print(f"ID:{l['id']} - {l['titulo']}")
+
     try:
         id_lib = int(input("Ingrese el ID del libro a reactivar: "))
         libro = buscar_libro(libros, id_lib)
         if libro:
             if libro.get("estado") == "disponible":
                 print("El libro ya está disponible.")
+                registrar_log("Reactivar libro", datos={"id": id_lib, "resultado": "ya disponible"}, usuario="sistema")
             else:
                 libro["estado"] = "disponible"
                 print("✔ Libro reactivado correctamente.")
+                registrar_log("Reactivar libro", datos={"id": id_lib, "resultado": "reactivado"}, usuario="sistema")
         else:
             print("Libro no encontrado.")
+            registrar_log("Reactivar libro", datos={"id": id_lib, "resultado": "no encontrado"}, usuario="sistema")
     except ValueError:
         print("✖ ID inválido.")
+        registrar_log("Reactivar libro", datos={"id": "inválido", "resultado": "error de entrada"}, usuario="sistema")
+
 
 def ver_stock_total(libros, usuario):
     print("\n" + "-" * 60)
@@ -218,21 +240,22 @@ def ver_stock_total(libros, usuario):
             f"ID:{libro['id']:>5} | {libro['titulo']:<30} | Categoría:{categoria:<15} | Stock:{libro['stock']:>3}"
         )
     print("-" * 60)
-    # Registrar solo una vez la acción de consultar el stock
     registrar_log(
         "Consultar stock total",
         datos={"cantidad_libros": sum(1 for libro in libros if libro.get("estado") == "disponible")},
         usuario=usuario
     )
 
-def mostrar_ultimos_libros(libros):
+def mostrar_ultimos_libros(libros, usuario="sistema"):
     if not libros:
         print("No hay libros.")
+        registrar_log("Mostrar últimos libros", datos={"resultado": "sin libros"}, usuario=usuario)
         return
     try:
         n = int(input("¿Cuántos últimos mostrar? "))
     except ValueError:
         print("✖ Número inválido.")
+        registrar_log("Mostrar últimos libros", datos={"resultado": "input inválido"}, usuario=usuario)
         return
     n = max(1, min(n, len(libros)))
     print("\n" + "-" * 60)
@@ -240,12 +263,15 @@ def mostrar_ultimos_libros(libros):
     for libro in libros[-n:]:
         print(f"ID:{libro['id']:>5} | {libro['titulo']} ({libro['categoria']})")
     print("-" * 60)
+    registrar_log("Mostrar últimos libros", datos={"cantidad_mostrada": n}, usuario=usuario)
 
-def libros_baratos(libros):
+
+def libros_baratos(libros, usuario="sistema"):
     try:
         limite = float(input("Mostrar libros con precio menor a: $"))
     except ValueError:
         print("✖ Ingresá un número válido.")
+        registrar_log("Libros baratos", datos={"limite": "inválido"}, usuario=usuario)
         return
     baratos = [l for l in libros if l["precio"] < limite and l.get("estado") == "disponible"]
     print("\n" + "-" * 60)
@@ -257,15 +283,20 @@ def libros_baratos(libros):
     else:
         print("No hay libros por debajo de ese precio.")
     print("-" * 60)
+    registrar_log("Libros baratos", datos={"limite": limite, "cantidad": len(baratos)}, usuario=usuario)
+
 
 def obtener_categorias():
     return sorted(CATEGORIAS)
 
-def agregar_categoria(nombre):
+def agregar_categoria(nombre, usuario="sistema"):
     if nombre in CATEGORIAS:
+        registrar_log("Agregar categoría", datos={"nombre": nombre, "resultado": "ya existe"}, usuario=usuario)
         return False
     CATEGORIAS.add(nombre)
+    registrar_log("Agregar categoría", datos={"nombre": nombre, "resultado": "agregada"}, usuario=usuario)
     return True
+
 
 def modificar_categoria(actual, nueva):
     if actual not in CATEGORIAS or nueva in CATEGORIAS:
@@ -274,13 +305,15 @@ def modificar_categoria(actual, nueva):
     CATEGORIAS.add(nueva)
     return True
 
-def eliminar_categoria(nombre):
+def eliminar_categoria(nombre, usuario="sistema"):
     if nombre not in CATEGORIAS or len(CATEGORIAS) == 1:
+        registrar_log("Eliminar categoría", datos={"nombre": nombre, "resultado": "fallo"}, usuario=usuario)
         return False
     CATEGORIAS.remove(nombre)
+    registrar_log("Eliminar categoría", datos={"nombre": nombre, "resultado": "eliminada"}, usuario=usuario)
     return True
 
-def menu_categorias():
+def menu_categorias(usuario="sistema"):
     while True:
         print("\n--- GESTIÓN DE CATEGORÍAS ---")
         print("1) Ver categorías")
@@ -298,7 +331,7 @@ def menu_categorias():
 
         elif opcion == 2:
             nueva = input("Ingrese nueva categoría: ").title()
-            if agregar_categoria(nueva):
+            if agregar_categoria(nueva, usuario):
                 print("✔ Categoría agregada.")
             else:
                 print("✖ Ya existe esa categoría.")
@@ -306,14 +339,14 @@ def menu_categorias():
         elif opcion == 3:
             actual = input("Categoría a modificar: ").title()
             nueva = input("Nuevo nombre: ").title()
-            if modificar_categoria(actual, nueva):
+            if modificar_categoria(actual, nueva, usuario):
                 print("✔ Modificada correctamente.")
             else:
                 print("✖ Error al modificar. Verifique los nombres.")
 
         elif opcion == 4:
             nombre = input("Categoría a eliminar: ").title()
-            if eliminar_categoria(nombre):
+            if eliminar_categoria(nombre, usuario):
                 print("✔ Eliminada correctamente.")
             else:
                 print("✖ No se pudo eliminar. ¿Existe o es la única?")

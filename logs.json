@@ -89,5 +89,70 @@
     "datos": {
       "cantidad_libros": 10
     }
+  },
+  {
+    "timestamp": "2025-06-09T16:34:53.373441",
+    "accion": "Agregar libro",
+    "usuario": "vendedor1",
+    "datos": {
+      "id": 48886,
+      "titulo": "Franco",
+      "autor": "Parodi",
+      "categoria": "Infantil",
+      "precio": 40000.0,
+      "stock": 40,
+      "isbn": "000-0000000000",
+      "estado": "disponible"
+    }
+  },
+  {
+    "timestamp": "2025-06-09T16:35:00.937591",
+    "accion": "Buscar libro",
+    "usuario": "vendedor1",
+    "datos": {
+      "id": 1,
+      "encontrado": true
+    }
+  },
+  {
+    "timestamp": "2025-06-09T16:35:06.564240",
+    "accion": "Consultar stock total",
+    "usuario": "vendedor1",
+    "datos": {
+      "cantidad_libros": 11
+    }
+  },
+  {
+    "timestamp": "2025-06-09T16:37:09.648060",
+    "accion": "Agregar libro",
+    "usuario": "vendedor1",
+    "datos": {
+      "id": 57935,
+      "titulo": "Franco",
+      "autor": "Parodi",
+      "categoria": "Ficcion",
+      "precio": 40000.0,
+      "stock": 40,
+      "isbn": "000-0000000000",
+      "estado": "disponible"
+    }
+  },
+  {
+    "timestamp": "2025-06-09T17:28:43.807507",
+    "accion": "Agregar cliente",
+    "usuario": "vendedor1",
+    "datos": {
+      "dni": "43034931",
+      "nombre": "Franco",
+      "apellido": "Parodi"
+    }
+  },
+  {
+    "timestamp": "2025-06-09T17:28:47.130028",
+    "accion": "Ver clientes",
+    "usuario": "vendedor1",
+    "datos": {
+      "cantidad": 3
+    }
   }
 ]

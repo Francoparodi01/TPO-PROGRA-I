@@ -1,10 +1,10 @@
 from datetime import datetime
-from utils import pedir_opcion
+from utils import registrar_log
 from libros import buscar_libro
 from clientes import buscar_cliente, agregar_cliente
 
 
-def menu_ventas(libros, clientes, ventas, facturas):
+def menu_ventas(libros, clientes, ventas, facturas, usuario):
     while True:
         print("\n" + "*" * 60)
         print("MENÚ VENTAS")
@@ -18,26 +18,24 @@ def menu_ventas(libros, clientes, ventas, facturas):
         opcion = input("Seleccione una opción: ")
 
         if opcion == "1":
-            vender_libro(libros, clientes, ventas, facturas)
+            vender_libro(libros, clientes, ventas, facturas, usuario)
         elif opcion == "2":
-            ver_ventas_realizadas(ventas)
+            ver_ventas_realizadas(ventas, usuario)
         elif opcion == "3":
-            ver_facturas_emitidas(facturas)
+            ver_facturas_emitidas(facturas, usuario)
         elif opcion == "4":
             break
         else:
             print("Opción inválida.")
 
-
-def vender_libro(libros, clientes, ventas, facturas):
+def vender_libro(libros, clientes, ventas, facturas, usuario):
     dni_cliente = input("DNI del cliente: ")
     cliente = buscar_cliente(clientes, dni_cliente)
     if cliente:
         print(f"Bienvenido/a {cliente['nombre']} {cliente['apellido']}")
-
-    if not cliente:
+    else:
         print("Cliente no encontrado. Agregando nuevo cliente.")
-        agregar_cliente(clientes, dni_cliente)
+        agregar_cliente(clientes, dni_cliente, usuario=usuario)
         cliente = buscar_cliente(clientes, dni_cliente)
 
     fecha = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
@@ -79,6 +77,9 @@ def vender_libro(libros, clientes, ventas, facturas):
         if confirmar == "s":
             factura["Total"] = total
             facturas.append(factura)
+
+            registrar_log("Venta realizada", datos=factura, usuario=usuario)
+
             print("\n" + "-" * 60)
             print(" FACTURA EMITIDA ")
             print(f"N°:{factura['Factura']}  Fecha:{factura['Fecha']}  DNI:{factura['DNI']}")
@@ -95,20 +96,20 @@ def vender_libro(libros, clientes, ventas, facturas):
     else:
         print("No se realizó ninguna venta.")
 
-
-def ver_ventas_realizadas(ventas):
+def ver_ventas_realizadas(ventas, usuario):
     print("\n" + "-" * 60)
     print(" VENTAS REALIZADAS ")
     print("-" * 60)
     for v in ventas:
         print(v)
     print("-" * 60)
+    registrar_log("Ver ventas realizadas", datos={"cantidad": len(ventas)}, usuario=usuario)
 
-
-def ver_facturas_emitidas(facturas):
+def ver_facturas_emitidas(facturas, usuario):
     print("\n" + "-" * 60)
     print(" FACTURAS EMITIDAS ")
     print("-" * 60)
     for f in facturas:
         print(f)
         print("-" * 60)
+    registrar_log("Ver facturas emitidas", datos={"cantidad": len(facturas)}, usuario=usuario)

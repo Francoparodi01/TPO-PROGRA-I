@@ -40,9 +40,9 @@ def main():
             if opcion == 1:
                 menu_libros(libros, usuario)
             elif opcion == 2:
-                menu_ventas(libros, clientes, ventas, facturas)
+                menu_ventas(libros, clientes, ventas, facturas, usuario)
             elif opcion == 3:
-                menu_clientes(clientes)
+                menu_clientes(clientes, usuario)
             elif opcion == 4:
                 salir()
                 break
