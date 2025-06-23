@@ -1,0 +1,16 @@
+[
+  {
+    "contrasena": "contra1",
+    "nombre": "Franco",
+    "apellido": "Parodi",
+    "dni": "43034931",
+    "mail": "franco.parodi@gmail.com"
+  },
+  {
+    "contrasena": "contra2",
+    "nombre": "Manuel",
+    "apellido": "Oliver",
+    "dni": "44678986",
+    "mail": "manuel.oliver@gmail.com"
+  }
+]

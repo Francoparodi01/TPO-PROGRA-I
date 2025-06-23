@@ -1,0 +1,70 @@
+[
+    {
+        "Factura": 1,
+        "Fecha": "2025-06-22 00:04:26",
+        "DNI": "1",
+        "Libros": [
+            {
+                "id_libro": 1,
+                "cantidad": 1,
+                "precio_unitario": 4500.0
+            },
+            {
+                "id_libro": 3,
+                "cantidad": 4,
+                "precio_unitario": 6000.0
+            },
+            {
+                "id_libro": 4,
+                "cantidad": 4,
+                "precio_unitario": 4000.0
+            }
+        ],
+        "Total": 44500.0
+    },
+    {
+        "Factura": 2,
+        "Fecha": "2025-06-22 12:26:49",
+        "DNI": "22360314",
+        "Libros": [
+            {
+                "id_libro": 1,
+                "cantidad": 2,
+                "precio_unitario": 4500.0
+            }
+        ],
+        "Total": 9000.0
+    },
+    {
+        "Factura": 3,
+        "Fecha": "2025-06-23 18:37:38",
+        "DNI": "43034931",
+        "Libros": [
+            {
+                "id_libro": 1,
+                "cantidad": 2,
+                "precio_unitario": 4500.0
+            },
+            {
+                "id_libro": 83344,
+                "cantidad": 1,
+                "precio_unitario": 8000.0
+            }
+        ],
+        "Total": 17000.0
+    },
+    {
+        "Factura": 4,
+        "Fecha": "2025-06-23 18:56:11",
+        "DNI": "43034931",
+        "Libros": [
+            {
+                "id_libro": 1,
+                "titulo": "1986",
+                "cantidad": 1,
+                "precio_unitario": 4500.0
+            }
+        ],
+        "Total": 4500.0
+    }
+]
